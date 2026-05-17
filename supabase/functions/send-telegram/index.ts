@@ -21,10 +21,12 @@ serve(async (req) => {
     const serviceRoleKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
     let isAuthorized = false;
 
+    // Nếu có record (từ Database Trigger), chúng ta tin tưởng vì nó đến từ hệ thống nội bộ
     if (record) {
       isAuthorized = true;
-      console.log("[send-telegram] Thông báo booking mới cho:", record.customer_name);
+      console.log("[send-telegram] Xử lý thông báo cho khách hàng:", record.customer_name);
     } else if (authHeader) {
+      // Nếu gọi từ Frontend (nút Gửi thử), kiểm tra quyền Admin
       if (authHeader === `Bearer ${serviceRoleKey}`) {
         isAuthorized = true;
       } else {
@@ -66,6 +68,8 @@ serve(async (req) => {
       messageText = customMessage;
     } else if (record) {
       const formattedDate = record.appointment_date ? record.appointment_date.split('-').reverse().join('/') : 'Chưa chọn';
+      
+      // Xử lý danh sách tài liệu
       let attachments = record.attachments || [];
       if (typeof attachments === 'string') {
         attachments = attachments.replace(/{|}/g, '').split(',').filter(Boolean);
@@ -75,6 +79,8 @@ serve(async (req) => {
         : '<i>Không có tài liệu đính kèm</i>';
 
       const now = new Date().toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh' });
+      
+      // Xử lý loại phòng và mục đích
       let roomType = record.room_type || 'N/A';
       let purpose = 'N/A';
       if (roomType.includes(' | Mục đích: ')) {
@@ -99,6 +105,9 @@ serve(async (req) => {
 📅 <b>LỊCH HẸN</b>
 • Hình thức: <b>${record.consult_type || 'N/A'}</b>
 • Thời gian: <b>${record.appointment_time || 'N/A'}</b> | <b>${formattedDate}</b>
+
+📝 <b>GHI CHÚ:</b>
+<i>${record.note || 'Không có ghi chú thêm'}</i>
 
 📂 <b>TÀI LIỆU:</b>
 ${fileLinksText}
