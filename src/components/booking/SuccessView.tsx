@@ -16,6 +16,8 @@ const SuccessView = ({ data, onReset }: SuccessViewProps) => {
   const getPurposeName = (id: string) => PURPOSES.find(p => p.id === id)?.title || id;
 
   const formattedDate = data.date ? data.date.split('-').reverse().join('/') : 'Sẽ liên hệ xác nhận';
+  const hotlineDisplay = "0908.386.258";
+  const hotlineLink = "tel:0908386258";
 
   return (
     <div className="max-w-2xl mx-auto bg-white rounded-[24px] md:rounded-[32px] shadow-xl md:shadow-2xl overflow-hidden border border-vugia-sand p-6 sm:p-10 md:p-14 text-center">
@@ -106,9 +108,9 @@ const SuccessView = ({ data, onReset }: SuccessViewProps) => {
           asChild
           className="flex-1 h-14 md:h-15 bg-vugia-navy hover:bg-vugia-navy/90 text-vugia-cream rounded-xl font-bold transition-all shadow-md text-[15px] md:text-[16px]"
         >
-          <a href="tel:0357412590" className="flex items-center justify-center gap-2">
+          <a href={hotlineLink} className="flex items-center justify-center gap-2">
             <PhoneCall className="w-4.5 h-4.5" />
-            Gọi hotline 0357.412.590
+            Gọi hotline {hotlineDisplay}
           </a>
         </Button>
         <Button
