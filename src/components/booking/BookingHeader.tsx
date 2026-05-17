@@ -11,7 +11,7 @@ const BookingHeader = () => {
         <div className="flex items-center gap-3 min-w-0">
           <div className="w-12 h-12 md:w-14 md:h-14 rounded-xl bg-white flex items-center justify-center shadow-sm border border-vugia-sand/80 flex-shrink-0 p-1.5">
             <img
-              src="/logo-vugia.png"
+              src="dyad-media://media/landingpage-form-sconcept/.dyad/media/d770494095dc888f442109e6105d6037.png"
               alt="SOPHIA CONCEPT Logo"
               className="w-full h-full object-contain"
             />
