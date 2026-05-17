@@ -8,29 +8,23 @@ const corsHeaders = {
 }
 
 serve(async (req) => {
-  // Xử lý CORS cho các cuộc gọi từ trình duyệt
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders })
   }
 
   try {
     const payload = await req.json();
-    const record = payload.record; // Dữ liệu từ Trigger hoặc Form
-    const customMessage = payload.message; // Dữ liệu từ nút "Gửi thử" trong Admin
+    const record = payload.record;
+    const customMessage = payload.message;
 
-    // KIỂM TRA QUYỀN TRUY CẬP
     const authHeader = req.headers.get('Authorization');
     const serviceRoleKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
     let isAuthorized = false;
 
-    // 1. Nếu có 'record' (đây là một booking mới), chúng ta cho phép gửi để đảm bảo thông báo luôn tới.
-    // Việc này an toàn vì dữ liệu booking đã được lưu vào DB trước đó qua RLS.
     if (record) {
       isAuthorized = true;
-      console.log("[send-telegram] Processing booking notification for:", record.customer_name);
-    } 
-    // 2. Nếu là tin nhắn tùy chỉnh (Gửi thử từ giao diện Admin), bắt buộc phải xác thực Admin
-    else if (authHeader) {
+      console.log("[send-telegram] Thông báo booking mới cho:", record.customer_name);
+    } else if (authHeader) {
       if (authHeader === `Bearer ${serviceRoleKey}`) {
         isAuthorized = true;
       } else {
@@ -54,7 +48,6 @@ serve(async (req) => {
     }
 
     if (!isAuthorized) {
-      console.error("[send-telegram] Unauthorized access attempt");
       return new Response(JSON.stringify({ error: 'Unauthorized' }), { 
         status: 401, 
         headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
@@ -65,30 +58,23 @@ serve(async (req) => {
     const chatId = Deno.env.get('TELEGRAM_CHAT_ID');
 
     if (!token || !chatId) {
-      throw new Error("Thiếu cấu hình TELEGRAM_BOT_TOKEN hoặc TELEGRAM_CHAT_ID");
+      throw new Error("Chưa cấu hình TELEGRAM_BOT_TOKEN hoặc TELEGRAM_CHAT_ID trong Secrets");
     }
 
     let messageText = "";
-
-    // Trường hợp 1: Gửi thử từ giao diện Admin
     if (customMessage && !record) {
       messageText = customMessage;
-    } 
-    // Trường hợp 2: Thông báo tự động khi có Booking mới
-    else if (record) {
+    } else if (record) {
       const formattedDate = record.appointment_date ? record.appointment_date.split('-').reverse().join('/') : 'Chưa chọn';
-      
       let attachments = record.attachments || [];
       if (typeof attachments === 'string') {
         attachments = attachments.replace(/{|}/g, '').split(',').filter(Boolean);
       }
-
       const fileLinksText = attachments.length > 0
         ? attachments.map((url, i) => `• <a href="${url.trim()}">Tài liệu ${i + 1}</a>`).join('\n')
         : '<i>Không có tài liệu đính kèm</i>';
 
       const now = new Date().toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh' });
-
       let roomType = record.room_type || 'N/A';
       let purpose = 'N/A';
       if (roomType.includes(' | Mục đích: ')) {
@@ -100,30 +86,24 @@ serve(async (req) => {
       messageText = `
 <b>✨ THÔNG BÁO LỊCH HẸN MỚI ✨</b>
 ━━━━━━━━━━━━━━━━━━
-👤 <b>THÔNG TIN KHÁCH HÀNG</b>
+👤 <b>KHÁCH HÀNG</b>
 • Họ tên: <b>${record.customer_name}</b>
 • Điện thoại: <code>${record.phone}</code>
-• Email: ${record.email || 'Không cung cấp'}
 • Khu vực: ${record.city || 'N/A'}
 
-🏠 <b>YÊU CẦU TƯ VẤN</b>
+🏠 <b>YÊU CẦU</b>
 • Loại căn: ${roomType}
 • Mục đích: ${purpose}
-• Giai đoạn: ${record.stage || 'N/A'}
 • Ngân sách: ${record.budget_type || 'N/A'}
 
-📅 <b>LỊCH HẸN CHI TIẾT</b>
+📅 <b>LỊCH HẸN</b>
 • Hình thức: <b>${record.consult_type || 'N/A'}</b>
 • Thời gian: <b>${record.appointment_time || 'N/A'}</b> | <b>${formattedDate}</b>
 
-📝 <b>GHI CHÚ</b>
-• Nội dung: <i>${record.note || 'Không có ghi chú'}</i>
-
-📂 <b>TÀI LIỆU ĐÍNH KÈM:</b>
+📂 <b>TÀI LIỆU:</b>
 ${fileLinksText}
 ━━━━━━━━━━━━━━━━━━
-🕒 <i>Gửi lúc: ${now}</i>
-🤖 <i>Hệ thống VŨ GIA Booking</i>
+🕒 <i>${now}</i>
       `;
     }
 
@@ -133,13 +113,9 @@ ${fileLinksText}
       body: JSON.stringify({
         chat_id: chatId,
         text: messageText,
-        parse_mode: 'HTML',
-        disable_web_page_preview: false
+        parse_mode: 'HTML'
       }),
     });
-
-    const tgData = await tgRes.json();
-    if (!tgData.ok) throw new Error(`Telegram API Error: ${tgData.description}`);
 
     return new Response(JSON.stringify({ success: true }), { 
       status: 200, 
@@ -147,7 +123,6 @@ ${fileLinksText}
     });
 
   } catch (error: any) {
-    console.error("[send-telegram] Error:", error.message);
     return new Response(JSON.stringify({ error: error.message }), { 
       status: 500, 
       headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
