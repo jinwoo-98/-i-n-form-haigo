@@ -28,7 +28,7 @@ const SuccessView = ({ data, onReset }: SuccessViewProps) => {
         Đặt lịch thành công! 🎉
       </h2>
       <p className="text-[15px] md:text-[17px] text-vugia-gold mb-8 md:mb-10 leading-relaxed max-w-md mx-auto">
-        Cảm ơn bạn đã tin tưởng <b className="text-vugia-navy">VŨ GIA</b>. Chuyên gia của chúng tôi sẽ liên hệ xác nhận trong vòng <b className="text-vugia-navy">30 phút</b> tới.
+        Cảm ơn bạn đã tin tưởng <b className="text-vugia-navy">SCONCEPT</b>. Chuyên gia của chúng tôi sẽ liên hệ xác nhận trong vòng <b className="text-vugia-navy">30 phút</b> tới.
       </p>
 
       {/* Thẻ tóm tắt lịch hẹn */}

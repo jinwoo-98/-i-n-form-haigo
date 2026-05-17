@@ -12,13 +12,13 @@ const BookingHeader = () => {
           <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-white flex items-center justify-center shadow-sm border border-vugia-sand/80 flex-shrink-0 p-1.5">
             <img
               src="/logo-vugia.png"
-              alt="Logo VŨ GIA"
+              alt="Logo SCONCEPT"
               className="w-full h-full object-contain"
             />
           </div>
           <div className="min-w-0">
             <div className="text-[16px] md:text-[18px] font-extrabold text-vugia-navy leading-tight tracking-tight truncate">
-              VŨ GIA
+              SCONCEPT
             </div>
             <div className="text-[10px] md:text-[11px] text-vugia-gold font-semibold uppercase tracking-[0.15em] truncate">
               Nội thất cao cấp

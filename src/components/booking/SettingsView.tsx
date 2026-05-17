@@ -182,7 +182,7 @@ const SettingsView = ({ onClose }: SettingsViewProps) => {
             <Label className="text-[12px] font-bold text-[#5C544A]">Email quản trị</Label>
             <Input 
               type="email" 
-              placeholder="admin@vugia.vn" 
+              placeholder="admin@sconcept.vn" 
               className="h-12 bg-[#F9F6F0] border-[#D5CEC3] rounded-xl focus:ring-[#3D5A45]/20 focus:border-[#3D5A45]"
               value={email}
               onChange={e => setEmail(e.target.value)}
