@@ -171,30 +171,30 @@ const SettingsView = ({ onClose }: SettingsViewProps) => {
 
   if (!isAuthenticated) {
     return (
-      <div className="max-w-md mx-auto bg-white rounded-[32px] shadow-2xl border border-[#EDE8DF] p-12 text-center">
-        <div className="w-16 h-16 bg-[#F9F6F0] rounded-full flex items-center justify-center mx-auto mb-6">
-          <Lock className="w-8 h-8 text-[#3D5A45]" />
+      <div className="max-w-md mx-auto bg-white rounded-[32px] shadow-2xl border border-vugia-sand p-12 text-center">
+        <div className="w-16 h-16 bg-vugia-cream rounded-full flex items-center justify-center mx-auto mb-6">
+          <Lock className="w-8 h-8 text-vugia-navy" />
         </div>
-        <h2 className="text-2xl font-bold text-[#2C2824] mb-2">Quản trị hệ thống</h2>
-        <p className="text-[14px] text-[#8C8070] mb-8">Đăng nhập để quản lý cấu hình</p>
+        <h2 className="text-2xl font-bold text-slate-800 mb-2">Quản trị hệ thống</h2>
+        <p className="text-[14px] text-vugia-gold mb-8">Đăng nhập để quản lý cấu hình</p>
         <form onSubmit={handleLogin} className="space-y-4 text-left">
           <div className="space-y-2">
-            <Label className="text-[12px] font-bold text-[#5C544A]">Email quản trị</Label>
+            <Label className="text-[12px] font-bold text-slate-600">Email quản trị</Label>
             <Input 
               type="email" 
-              placeholder="admin@sconcept.vn" 
-              className="h-12 bg-[#F9F6F0] border-[#D5CEC3] rounded-xl focus:ring-[#3D5A45]/20 focus:border-[#3D5A45]"
+              placeholder="admin@sophiaconcept.vn" 
+              className="h-12 bg-vugia-cream border-vugia-sand rounded-xl focus:ring-vugia-navy/20 focus:border-vugia-navy"
               value={email}
               onChange={e => setEmail(e.target.value)}
               required
             />
           </div>
           <div className="space-y-2">
-            <Label className="text-[12px] font-bold text-[#5C544A]">Mật khẩu</Label>
+            <Label className="text-[12px] font-bold text-slate-600">Mật khẩu</Label>
             <Input 
               type="password" 
               placeholder="••••••••" 
-              className="h-12 bg-[#F9F6F0] border-[#D5CEC3] rounded-xl focus:ring-[#3D5A45]/20 focus:border-[#3D5A45]"
+              className="h-12 bg-vugia-cream border-vugia-sand rounded-xl focus:ring-vugia-navy/20 focus:border-vugia-navy"
               value={password}
               onChange={e => setPassword(e.target.value)}
               required
@@ -202,12 +202,12 @@ const SettingsView = ({ onClose }: SettingsViewProps) => {
           </div>
           <Button 
             type="submit" 
-            className="w-full h-14 bg-[#3D5A45] hover:bg-[#2d4333] text-white rounded-2xl font-bold shadow-lg shadow-[#3D5A45]/20 transition-all active:scale-95 mt-4"
+            className="w-full h-14 bg-vugia-navy hover:bg-vugia-navy/90 text-white rounded-2xl font-bold shadow-lg shadow-vugia-navy/20 transition-all active:scale-95 mt-4"
             disabled={isLoading}
           >
             {isLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : "Đăng nhập"}
           </Button>
-          <Button type="button" variant="ghost" onClick={onClose} className="w-full text-[#8C8070] hover:text-[#2C2824] hover:bg-transparent">
+          <Button type="button" variant="ghost" onClick={onClose} className="w-full text-vugia-gold hover:text-slate-800 hover:bg-transparent">
             Quay lại
           </Button>
         </form>
@@ -217,13 +217,13 @@ const SettingsView = ({ onClose }: SettingsViewProps) => {
 
   if (isAuthenticated && !isAdmin && !isLoading) {
     return (
-      <div className="max-w-md mx-auto bg-white rounded-[32px] shadow-2xl border border-[#EDE8DF] p-12 text-center">
+      <div className="max-w-md mx-auto bg-white rounded-[32px] shadow-2xl border border-vugia-sand p-12 text-center">
         <div className="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-6">
           <Lock className="w-8 h-8 text-red-500" />
         </div>
-        <h2 className="text-2xl font-bold text-[#2C2824] mb-2">Từ chối truy cập</h2>
-        <p className="text-[14px] text-[#8C8070] mb-8">Tài khoản của bạn không có quyền quản trị.</p>
-        <Button onClick={handleLogout} className="w-full h-14 bg-[#3D5A45] text-white rounded-2xl font-bold">
+        <h2 className="text-2xl font-bold text-slate-800 mb-2">Từ chối truy cập</h2>
+        <p className="text-[14px] text-vugia-gold mb-8">Tài khoản của bạn không có quyền quản trị.</p>
+        <Button onClick={handleLogout} className="w-full h-14 bg-vugia-navy text-white rounded-2xl font-bold">
           Đăng xuất
         </Button>
       </div>
@@ -231,19 +231,19 @@ const SettingsView = ({ onClose }: SettingsViewProps) => {
   }
 
   return (
-    <div className="max-w-2xl mx-auto bg-white rounded-[32px] shadow-2xl overflow-hidden border border-[#EDE8DF] p-10">
+    <div className="max-w-2xl mx-auto bg-white rounded-[32px] shadow-2xl overflow-hidden border border-vugia-sand p-10">
       <div className="flex items-center justify-between mb-10">
         <div className="flex items-center gap-4">
           <Button variant="ghost" size="icon" onClick={onClose} className="rounded-full">
-            <ArrowLeft className="w-5 h-5 text-[#8C8070]" />
+            <ArrowLeft className="w-5 h-5 text-vugia-gold" />
           </Button>
-          <h2 className="text-2xl font-bold text-[#2C2824]">Cấu hình</h2>
+          <h2 className="text-2xl font-bold text-slate-800">Cấu hình</h2>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline" className="rounded-xl px-4 border-[#D5CEC3] text-[#8C8070]" onClick={handleLogout}>
+          <Button variant="outline" className="rounded-xl px-4 border-vugia-sand text-vugia-gold" onClick={handleLogout}>
             Đăng xuất
           </Button>
-          <Button className="bg-[#3D5A45] hover:bg-[#2d4333] text-white rounded-xl px-6" onClick={handleSave} disabled={isSaving}>
+          <Button className="bg-vugia-navy hover:bg-vugia-navy/90 text-white rounded-xl px-6" onClick={handleSave} disabled={isSaving}>
             {isSaving ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Save className="w-4 h-4 mr-2" />} Lưu
           </Button>
         </div>
@@ -252,27 +252,27 @@ const SettingsView = ({ onClose }: SettingsViewProps) => {
       <div className="space-y-10">
         <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2 text-[#3D5A45] font-bold text-[13px] uppercase tracking-wider">
+            <div className="flex items-center gap-2 text-vugia-navy font-bold text-[13px] uppercase tracking-wider">
               <Send className="w-4 h-4" /> Thông báo Telegram
             </div>
             <Button 
               variant="outline" 
               size="sm" 
-              className="h-8 text-[11px] font-bold border-[#D5CEC3] text-[#8C8070] hover:bg-[#E8F0EA] hover:text-[#3D5A45] hover:border-[#3D5A45] rounded-lg transition-all"
+              className="h-8 text-[11px] font-bold border-vugia-sand text-vugia-gold hover:bg-vugia-accent hover:text-vugia-navy hover:border-vugia-navy rounded-lg transition-all"
               onClick={handleTestTelegram}
               disabled={isTesting}
             >
               {isTesting ? <Loader2 className="w-3 h-3 mr-2 animate-spin" /> : <Send className="w-3 h-3 mr-2" />} Gửi thử
             </Button>
           </div>
-          <div className="p-6 bg-[#F9F6F0] rounded-2xl border border-[#D5CEC3]">
+          <div className="p-6 bg-vugia-cream rounded-2xl border border-vugia-sand">
             <div className="flex items-start gap-3">
-              <div className="mt-1 bg-[#3D5A45]/10 p-2 rounded-full">
-                <Lock className="w-4 h-4 text-[#3D5A45]" />
+              <div className="mt-1 bg-vugia-navy/10 p-2 rounded-full">
+                <Lock className="w-4 h-4 text-vugia-navy" />
               </div>
               <div>
-                <p className="text-[13px] font-bold text-[#2C2824]">Bảo mật hệ thống</p>
-                <p className="text-[12px] text-[#8C8070] mt-1 leading-relaxed">
+                <p className="text-[13px] font-bold text-slate-800">Bảo mật hệ thống</p>
+                <p className="text-[12px] text-vugia-gold mt-1 leading-relaxed">
                   Chế độ RBAC đang hoạt động. Chỉ tài khoản có vai trò 'admin' trong bảng profiles mới có thể thay đổi các thông số này.
                 </p>
               </div>
@@ -281,26 +281,26 @@ const SettingsView = ({ onClose }: SettingsViewProps) => {
         </div>
 
         <div className="space-y-4">
-          <div className="text-[#3D5A45] font-bold text-[13px] uppercase tracking-wider">Ngân sách (Triệu VNĐ)</div>
-          <div className="overflow-x-auto border border-[#EDE8DF] rounded-2xl">
+          <div className="text-vugia-navy font-bold text-[13px] uppercase tracking-wider">Ngân sách (Triệu VNĐ)</div>
+          <div className="overflow-x-auto border border-vugia-sand rounded-2xl">
             <table className="w-full text-left text-[12px]">
-              <thead className="bg-[#F9F6F0]">
+              <thead className="bg-vugia-cream">
                 <tr>
-                  <th className="p-4 font-bold text-[#8C8070]">Loại căn</th>
-                  <th className="p-4 font-bold text-[#8C8070]">Vài món</th>
-                  <th className="p-4 font-bold text-[#8C8070]">Theo phòng</th>
-                  <th className="p-4 font-bold text-[#8C8070]">Trọn bộ</th>
+                  <th className="p-4 font-bold text-vugia-gold">Loại căn</th>
+                  <th className="p-4 font-bold text-vugia-gold">Vài món</th>
+                  <th className="p-4 font-bold text-vugia-gold">Theo phòng</th>
+                  <th className="p-4 font-bold text-vugia-gold">Trọn bộ</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#EDE8DF]">
+              <tbody className="divide-y divide-vugia-sand">
                 {Object.keys(ROOM_NAMES).map((id) => (
                   <tr key={id}>
-                    <td className="p-4 font-bold text-[#5C544A]">{ROOM_NAMES[id]}</td>
+                    <td className="p-4 font-bold text-slate-600">{ROOM_NAMES[id]}</td>
                     {[0, 1, 2].map(idx => (
                       <td key={idx} className="p-2">
                         <Input 
                           type="number" 
-                          className="h-9 text-right border-[#D5CEC3] rounded-lg" 
+                          className="h-9 text-right border-vugia-sand rounded-lg" 
                           value={(config as any)[id]?.[idx] || 0} 
                           onChange={e => updateVal(id, idx, e.target.value)} 
                         />

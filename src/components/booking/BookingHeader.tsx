@@ -9,19 +9,19 @@ const BookingHeader = () => {
       <div className="flex items-center justify-between gap-3 px-1">
         {/* Logo */}
         <div className="flex items-center gap-3 min-w-0">
-          <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-white flex items-center justify-center shadow-sm border border-vugia-sand/80 flex-shrink-0 p-1.5">
+          <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-white flex items-center justify-center shadow-sm border border-vugia-sand/80 flex-shrink-0 p-1">
             <img
-              src="/logo-vugia.png"
-              alt="Logo SCONCEPT"
+              src="dyad-media://media/landingpage-form-sconcept/.dyad/media/0cc0ee4d4b1aa43e794e45b210917715.png"
+              alt="Logo SOPHIA CONCEPT"
               className="w-full h-full object-contain"
             />
           </div>
           <div className="min-w-0">
             <div className="text-[16px] md:text-[18px] font-extrabold text-vugia-navy leading-tight tracking-tight truncate">
-              SCONCEPT
+              SOPHIA CONCEPT
             </div>
             <div className="text-[10px] md:text-[11px] text-vugia-gold font-semibold uppercase tracking-[0.15em] truncate">
-              Nội thất cao cấp
+              We Craft, You Shape
             </div>
           </div>
         </div>

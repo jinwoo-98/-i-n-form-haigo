@@ -25,7 +25,7 @@ export default {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         vugia: {
-          navy: "#1A1F2C",   // Xanh Navy đậm (khớp với nền logo)
+          navy: "#2D4333",   // Xanh Rêu đậm (Khớp với logo SOPHIA CONCEPT)
           gold: "#8C8070",   // Vàng đồng/Nâu đất
           sand: "#EDE8DF",   // Màu cát/Beige
           cream: "#F9F6F0",  // Màu nền kem
