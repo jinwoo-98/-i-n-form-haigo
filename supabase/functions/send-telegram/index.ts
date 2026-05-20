@@ -66,28 +66,36 @@ serve(async (req) => {
     } else if (record) {
       const formattedDate = record.appointment_date ? record.appointment_date.split('-').reverse().join('/') : 'Chưa chọn';
       
-      // 1. Xử lý tệp đính kèm một cách an toàn và chính xác
+      // Xử lý tệp đính kèm triệt để (Hỗ trợ Array, JSON String, PostgreSQL array string)
       let attachments = [];
       if (record.attachments) {
         if (Array.isArray(record.attachments)) {
           attachments = record.attachments;
         } else if (typeof record.attachments === 'string') {
-          // Xử lý chuỗi định dạng mảng của Postgres: {url1,url2}
-          attachments = record.attachments
-            .replace(/{|}/g, '')
-            .split(',')
-            .map(url => url.trim())
-            .filter(Boolean);
+          try {
+            // Thử parse nếu là chuỗi JSON array
+            const parsed = JSON.parse(record.attachments);
+            if (Array.isArray(parsed)) {
+              attachments = parsed;
+            }
+          } catch {
+            // Nếu không phải JSON, parse theo định dạng mảng của PostgreSQL: {url1,url2}
+            attachments = record.attachments
+              .replace(/[{}"']/g, '') // Xóa các ký tự đặc biệt bao gồm ngoặc nhọn, ngoặc kép, ngoặc đơn
+              .split(',')
+              .map(url => url.trim())
+              .filter(Boolean);
+          }
         }
       }
 
       const fileLinksText = attachments.length > 0
-        ? attachments.map((url, i) => `• <a href="${url}">Tài liệu đính kèm ${i + 1}</a>`).join('\n')
+        ? attachments.map((url, i) => `• <a href="${url}"><b>Tài liệu đính kèm ${i + 1}</b></a>`).join('\n')
         : '<i>Không có tài liệu đính kèm</i>';
 
       const now = new Date().toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh' });
       
-      // 2. Tách thông tin Loại căn hộ & Mục đích sử dụng
+      // Tách thông tin Loại căn hộ & Mục đích sử dụng
       let roomType = record.room_type || 'N/A';
       let purpose = 'N/A';
       if (roomType.includes(' | Mục đích: ')) {
@@ -96,7 +104,7 @@ serve(async (req) => {
         purpose = parts[1];
       }
 
-      // 3. Tách thông tin Giai đoạn & Tiến độ dự kiến (Câu hỏi bổ sung mới)
+      // Tách thông tin Giai đoạn & Tiến độ dự kiến (Câu hỏi bổ sung mới)
       let stage = record.stage || 'N/A';
       let timeline = 'N/A';
       if (stage.includes(' | Dự kiến: ')) {
@@ -105,24 +113,25 @@ serve(async (req) => {
         timeline = parts[1];
       }
 
+      // Format lại hiển thị tin nhắn - Đồng bộ IN ĐẬM toàn bộ nội dung sau dấu hai chấm (:)
       messageText = `
 <b>✨ THÔNG BÁO LỊCH HẸN MỚI (SCONCEPT) ✨</b>
 ━━━━━━━━━━━━━━━━━━
 👤 <b>KHÁCH HÀNG</b>
 • Họ tên: <b>${record.customer_name}</b>
 • Điện thoại: <code>${record.phone}</code>
-• Khu vực: ${record.city || 'N/A'}
+• Khu vực: <b>${record.city || 'N/A'}</b>
 
 🏠 <b>YÊU CẦU</b>
-• Loại căn: ${roomType}
-• Mục đích: ${purpose}
-• Ngân sách: ${record.budget_type || 'N/A'}
-• Giai đoạn: ${stage}
+• Loại căn: <b>${roomType}</b>
+• Mục đích: <b>${purpose}</b>
+• Ngân sách: <b>${record.budget_type || 'N/A'}</b>
+• Giai đoạn: <b>${stage}</b>
 • Tiến độ dự kiến: <b>${timeline}</b>
 
 📅 <b>LỊCH HẸN</b>
 • Hình thức: <b>${record.consult_type || 'N/A'}</b>
-• Thời gian: <b>${record.appointment_time || 'N/A'}</b> | <b>${formattedDate}</b>
+• Thời gian: <b>${record.appointment_time || 'N/A'} | ${formattedDate}</b>
 
 📝 <b>GHI CHÚ:</b>
 <i>${record.note || 'Không có ghi chú thêm'}</i>
