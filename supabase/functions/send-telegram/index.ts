@@ -66,7 +66,7 @@ serve(async (req) => {
     } else if (record) {
       const formattedDate = record.appointment_date ? record.appointment_date.split('-').reverse().join('/') : 'Chưa chọn';
       
-      // Xử lý tệp đính kèm triệt để (Hỗ trợ Array, JSON String, PostgreSQL array string)
+      // THUẬT TOÁN BÓC TÁCH FILE ĐÍNH KÈM TRIỆT ĐỂ: Kết hợp Array, JSON parsing, và Regex URL Matcher
       let attachments = [];
       if (record.attachments) {
         if (Array.isArray(record.attachments)) {
@@ -79,18 +79,18 @@ serve(async (req) => {
               attachments = parsed;
             }
           } catch {
-            // Nếu không phải JSON, parse theo định dạng mảng của PostgreSQL: {url1,url2}
-            attachments = record.attachments
-              .replace(/[{}"']/g, '') // Xóa các ký tự đặc biệt bao gồm ngoặc nhọn, ngoặc kép, ngoặc đơn
-              .split(',')
-              .map(url => url.trim())
-              .filter(Boolean);
+            // Nếu không phải JSON, sử dụng Regex để trích xuất toàn bộ URL hợp lệ bắt đầu bằng http/https
+            const urlRegex = /(https?:\/\/[^\s,}"'\}]+)/g;
+            const matches = record.attachments.match(urlRegex);
+            if (matches) {
+              attachments = matches.map(url => url.replace(/[}"']/g, '').trim());
+            }
           }
         }
       }
 
       const fileLinksText = attachments.length > 0
-        ? attachments.map((url, i) => `• <a href="${url}"><b>Tài liệu đính kèm ${i + 1}</b></a>`).join('\n')
+        ? attachments.map((url, i) => `• <a href="${url}">Tài liệu đính kèm ${i + 1}</a>`).join('\n')
         : '<i>Không có tài liệu đính kèm</i>';
 
       const now = new Date().toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh' });
@@ -104,7 +104,7 @@ serve(async (req) => {
         purpose = parts[1];
       }
 
-      // Tách thông tin Giai đoạn & Tiến độ dự kiến (Câu hỏi bổ sung mới)
+      // Tách thông tin Giai đoạn & Tiến độ dự kiến
       let stage = record.stage || 'N/A';
       let timeline = 'N/A';
       if (stage.includes(' | Dự kiến: ')) {
@@ -113,30 +113,30 @@ serve(async (req) => {
         timeline = parts[1];
       }
 
-      // Format lại hiển thị tin nhắn - Đồng bộ IN ĐẬM toàn bộ nội dung sau dấu hai chấm (:)
+      // Đảo phần in đậm: chỉ in đậm tiêu đề (bên trái dấu :), nội dung giá trị (bên phải dấu :) để bình thường
       messageText = `
 <b>✨ THÔNG BÁO LỊCH HẸN MỚI (SCONCEPT) ✨</b>
 ━━━━━━━━━━━━━━━━━━
 👤 <b>KHÁCH HÀNG</b>
-• Họ tên: <b>${record.customer_name}</b>
-• Điện thoại: <code>${record.phone}</code>
-• Khu vực: <b>${record.city || 'N/A'}</b>
+• <b>Họ tên</b>: ${record.customer_name}
+• <b>Điện thoại</b>: <code>${record.phone}</code>
+• <b>Khu vực</b>: ${record.city || 'N/A'}
 
 🏠 <b>YÊU CẦU</b>
-• Loại căn: <b>${roomType}</b>
-• Mục đích: <b>${purpose}</b>
-• Ngân sách: <b>${record.budget_type || 'N/A'}</b>
-• Giai đoạn: <b>${stage}</b>
-• Tiến độ dự kiến: <b>${timeline}</b>
+• <b>Loại căn</b>: ${roomType}
+• <b>Mục đích</b>: ${purpose}
+• <b>Ngân sách</b>: ${record.budget_type || 'N/A'}
+• <b>Giai đoạn</b>: ${stage}
+• <b>Tiến độ dự kiến</b>: ${timeline}
 
 📅 <b>LỊCH HẸN</b>
-• Hình thức: <b>${record.consult_type || 'N/A'}</b>
-• Thời gian: <b>${record.appointment_time || 'N/A'} | ${formattedDate}</b>
+• <b>Hình thức</b>: ${record.consult_type || 'N/A'}
+• <b>Thời gian</b>: ${record.appointment_time || 'N/A'} | ${formattedDate}
 
 📝 <b>GHI CHÚ:</b>
 <i>${record.note || 'Không có ghi chú thêm'}</i>
 
-📂 <b>TÀI LIỆU:</b>
+📂 <b>TÀI LIỆU ĐÍNH KÈM:</b>
 ${fileLinksText}
 ━━━━━━━━━━━━━━━━━━
 🕒 <i>${now}</i>
