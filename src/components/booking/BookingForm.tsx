@@ -266,8 +266,8 @@ const BookingForm = ({ onSuccess, onOpenSettings }: BookingFormProps) => {
 
         if (uploadError) {
           console.error("Lỗi tải file lên Storage:", uploadError);
-          showError(`Không thể tải lên file "${file.name}". Lỗi: ${uploadError.message}`);
-          continue;
+          // Ném lỗi ra ngoài để dừng toàn bộ quá trình gửi biểu mẫu
+          throw new Error(`Không thể tải lên tệp tin "${file.name}". Lỗi: ${uploadError.message}`);
         }
 
         const { data: { publicUrl } } = supabase.storage
@@ -278,7 +278,7 @@ const BookingForm = ({ onSuccess, onOpenSettings }: BookingFormProps) => {
       } catch (err: any) {
         dismissToast(toastId);
         console.error("Lỗi hệ thống khi tải file:", err);
-        showError(`Có lỗi hệ thống xảy ra khi tải lên file "${file.name}": ${err.message || err}`);
+        throw err;
       }
     }
     return uploadedUrls;
@@ -294,6 +294,7 @@ const BookingForm = ({ onSuccess, onOpenSettings }: BookingFormProps) => {
     setIsSubmitting(true);
 
     try {
+      // Quá trình tải tệp lên, nếu có bất kỳ lỗi nào xảy ra sẽ ngay lập tức dừng lại ở đây và nhảy vào khối catch
       const uploadedFiles = await uploadFiles();
 
       const stageTitle = STAGES.find(s => s.id === formData.stage)?.title || formData.stage;
@@ -334,7 +335,8 @@ const BookingForm = ({ onSuccess, onOpenSettings }: BookingFormProps) => {
       onSuccess({ ...formData, city: cityName, files: uploadedFiles, timestamp: new Date().toISOString() });
     } catch (error: any) {
       console.error("Error submitting booking:", error);
-      showError(`Có lỗi xảy ra khi gửi yêu cầu đặt lịch: ${error.message || error}`);
+      // Hiển thị thông báo lỗi rõ ràng và KHÔNG cho phép chuyển sang màn thành công
+      showError(`Không thể hoàn tất đặt lịch: ${error.message || error}`);
     } finally {
       setIsSubmitting(false);
     }
