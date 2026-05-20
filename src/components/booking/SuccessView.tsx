@@ -3,7 +3,7 @@
 import React from 'react';
 import { Button } from "../ui/button";
 import { CheckCircle2, User, Phone, Mail, Calendar, Clock, Home, Briefcase, PhoneCall, RotateCcw, MapPin } from 'lucide-react';
-import { ROOM_NAMES, STAGES, PURPOSES, CONSULT_TYPES } from '../../constants/booking';
+import { ROOM_NAMES, STAGES, PURPOSES, CONSULT_TYPES, TIMELINE_OPTIONS } from '../../constants/booking';
 
 interface SuccessViewProps {
   data: any;
@@ -14,6 +14,7 @@ const SuccessView = ({ data, onReset }: SuccessViewProps) => {
   const getStageName = (id: string) => STAGES.find(s => s.id === id)?.title || id;
   const getConsultName = (id: string) => CONSULT_TYPES.find(t => t.id === id)?.title || 'Linh hoạt';
   const getPurposeName = (id: string) => PURPOSES.find(p => p.id === id)?.title || id;
+  const getTimelineName = (id: string) => TIMELINE_OPTIONS.find(t => t.id === id)?.label || id;
 
   const formattedDate = data.date ? data.date.split('-').reverse().join('/') : 'Sẽ liên hệ xác nhận';
   const hotlineDisplay = "0908.386.258";
@@ -62,10 +63,10 @@ const SuccessView = ({ data, onReset }: SuccessViewProps) => {
         <div className="pt-4 md:pt-5 border-t border-vugia-sand grid grid-cols-2 gap-x-4 gap-y-4">
           <div className="space-y-1">
             <div className="text-[11px] font-bold text-vugia-gold uppercase tracking-wider flex items-center gap-1.5">
-              <Briefcase className="w-3.5 h-3.5" /> Giai đoạn
+              <Briefcase className="w-3.5 h-3.5" /> Giai đoạn & Tiến độ
             </div>
             <div className="text-[14px] md:text-[15px] text-vugia-navy font-bold leading-snug">
-              {getStageName(data.stage)}
+              {getStageName(data.stage)} {data.timeline && `· ${getTimelineName(data.timeline)}`}
             </div>
           </div>
           <div className="space-y-1">

@@ -4,7 +4,7 @@ import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { Button } from "../ui/button";
 import { Settings, Zap, Loader2, ChevronLeft, ChevronRight, ChevronDown } from 'lucide-react';
 import {
-  BUDGET_DEFAULT, ROOM_NAMES, STAGES, PURPOSES, CONSULT_TYPES, PEAK_HOURS
+  BUDGET_DEFAULT, ROOM_NAMES, STAGES, PURPOSES, CONSULT_TYPES, PEAK_HOURS, TIMELINE_OPTIONS
 } from '../../constants/booking';
 import { showSuccess, showError } from '../../utils/toast';
 import { supabase } from "@/integrations/supabase/client";
@@ -42,6 +42,7 @@ const BookingForm = ({ onSuccess, onOpenSettings }: BookingFormProps) => {
     phone: '',
     email: '',
     stage: '',
+    timeline: '',
     room: '',
     purpose: 'live',
     budget: '',
@@ -207,7 +208,8 @@ const BookingForm = ({ onSuccess, onOpenSettings }: BookingFormProps) => {
         return { valid: true };
       }
       case 1:
-        if (!formData.stage) return { valid: false, message: "Vui lòng chọn giai đoạn hiện tại của bạn" };
+        if (!formData.stage) return { valid: false, message: "Vui lòng chọn giai đoạn hiện tại của Anh/Chị" };
+        if (!formData.timeline) return { valid: false, message: "Vui lòng chọn thời gian dự kiến sử dụng nội thất" };
         return { valid: true };
       case 2:
         if (!formData.room) return { valid: false, message: "Vui lòng chọn loại căn hộ" };
@@ -291,7 +293,10 @@ const BookingForm = ({ onSuccess, onOpenSettings }: BookingFormProps) => {
     try {
       const uploadedFiles = await uploadFiles();
 
-      const stageName = STAGES.find(s => s.id === formData.stage)?.title || formData.stage;
+      const stageTitle = STAGES.find(s => s.id === formData.stage)?.title || formData.stage;
+      const timelineTitle = TIMELINE_OPTIONS.find(t => t.id === formData.timeline)?.label || formData.timeline;
+      const stageName = `${stageTitle} | Dự kiến: ${timelineTitle}`;
+
       const roomName = ROOM_NAMES[formData.room] || formData.room;
       const purposeName = PURPOSES.find(p => p.id === formData.purpose)?.title || formData.purpose;
       const consultName = CONSULT_TYPES.find(t => t.id === formData.consultType)?.title || formData.consultType;
@@ -337,7 +342,18 @@ const BookingForm = ({ onSuccess, onOpenSettings }: BookingFormProps) => {
       case 0:
         return <PersonalInfoSection formData={formData} setFormData={setFormData} errors={errors} onBlur={handleBlur} />;
       case 1:
-        return <StageSection selectedStage={formData.stage} onSelect={(id) => setFormData({ ...formData, stage: id })} />;
+        return (
+          <StageSection 
+            selectedStage={formData.stage} 
+            onSelectStage={(id) => setFormData({ ...formData, stage: id })} 
+            selectedTimeline={formData.timeline}
+            onSelectTimeline={(id) => setFormData({ ...formData, timeline: id })}
+            errors={{
+              stage: !formData.stage && completedSteps.has(1) ? "Vui lòng chọn giai đoạn" : "",
+              timeline: !formData.timeline && completedSteps.has(1) ? "Vui lòng chọn thời gian" : ""
+            }}
+          />
+        );
       case 2:
         return <RoomDetailsSection formData={formData} setFormData={setFormData} budgetOptions={budgetOptions} />;
       case 3:
