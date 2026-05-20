@@ -6,7 +6,7 @@ import { Settings, Zap, Loader2, ChevronLeft, ChevronRight, ChevronDown } from '
 import {
   BUDGET_DEFAULT, ROOM_NAMES, STAGES, PURPOSES, CONSULT_TYPES, PEAK_HOURS, TIMELINE_OPTIONS
 } from '../../constants/booking';
-import { showSuccess, showError } from '../../utils/toast';
+import { showSuccess, showError, showLoading, dismissToast } from '../../utils/toast';
 import { supabase } from "@/integrations/supabase/client";
 
 import PersonalInfoSection from './PersonalInfoSection';
@@ -64,7 +64,6 @@ const BookingForm = ({ onSuccess, onOpenSettings }: BookingFormProps) => {
   const checkScroll = () => {
     if (scrollRef.current) {
       const { scrollTop, scrollHeight, clientHeight } = scrollRef.current;
-      // Hiển thị gợi ý nếu còn hơn 20px chưa cuộn tới
       const isNotAtBottom = scrollHeight - scrollTop - clientHeight > 20;
       setShowScrollHint(isNotAtBottom);
     }
@@ -90,16 +89,11 @@ const BookingForm = ({ onSuccess, onOpenSettings }: BookingFormProps) => {
     fetchConfig();
   }, []);
 
-  // Theo dõi sự thay đổi của bước hoặc nội dung để cập nhật chỉ báo cuộn
   useEffect(() => {
     const scrollEl = scrollRef.current;
     if (scrollEl) {
       scrollEl.addEventListener('scroll', checkScroll);
-      
-      // Kiểm tra ngay khi đổi bước hoặc nội dung render xong
       const timeoutId = setTimeout(checkScroll, 100); 
-      
-      // Sử dụng ResizeObserver để theo dõi khi nội dung bên trong thay đổi chiều cao (ví dụ khi hiện lỗi)
       const observer = new ResizeObserver(checkScroll);
       observer.observe(scrollEl);
 
@@ -254,7 +248,11 @@ const BookingForm = ({ onSuccess, onOpenSettings }: BookingFormProps) => {
 
   const uploadFiles = async () => {
     const uploadedUrls = [];
-    for (const file of files) {
+    
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      const toastId = showLoading(`Đang tải lên tệp tin (${i + 1}/${files.length}): ${file.name}...`);
+      
       try {
         const fileExt = file.name.split('.').pop();
         const fileName = `${Math.random().toString(36).substring(2)}-${Date.now()}.${fileExt}`;
@@ -264,8 +262,11 @@ const BookingForm = ({ onSuccess, onOpenSettings }: BookingFormProps) => {
           .from('attachments')
           .upload(filePath, file);
 
+        dismissToast(toastId);
+
         if (uploadError) {
-          console.error("Lỗi tải file:", uploadError);
+          console.error("Lỗi tải file lên Storage:", uploadError);
+          showError(`Không thể tải lên file "${file.name}". Lỗi: ${uploadError.message}`);
           continue;
         }
 
@@ -274,8 +275,10 @@ const BookingForm = ({ onSuccess, onOpenSettings }: BookingFormProps) => {
           .getPublicUrl(filePath);
 
         uploadedUrls.push(publicUrl);
-      } catch (err) {
-        console.error("Lỗi xử lý file:", err);
+      } catch (err: any) {
+        dismissToast(toastId);
+        console.error("Lỗi hệ thống khi tải file:", err);
+        showError(`Có lỗi hệ thống xảy ra khi tải lên file "${file.name}": ${err.message || err}`);
       }
     }
     return uploadedUrls;
@@ -329,9 +332,9 @@ const BookingForm = ({ onSuccess, onOpenSettings }: BookingFormProps) => {
 
       showSuccess("Đặt lịch thành công!");
       onSuccess({ ...formData, city: cityName, files: uploadedFiles, timestamp: new Date().toISOString() });
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error submitting booking:", error);
-      showError("Có lỗi xảy ra khi gửi yêu cầu. Vui lòng thử lại sau.");
+      showError(`Có lỗi xảy ra khi gửi yêu cầu đặt lịch: ${error.message || error}`);
     } finally {
       setIsSubmitting(false);
     }
