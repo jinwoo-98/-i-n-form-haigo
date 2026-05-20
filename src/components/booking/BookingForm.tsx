@@ -298,7 +298,13 @@ const BookingForm = ({ onSuccess, onOpenSettings }: BookingFormProps) => {
       const uploadedFiles = await uploadFiles();
 
       const stageTitle = STAGES.find(s => s.id === formData.stage)?.title || formData.stage;
-      const timelineTitle = TIMELINE_OPTIONS.find(t => t.id === formData.timeline)?.label || formData.timeline;
+      
+      // Lấy thông tin timeline option bao gồm cả label và desc
+      const timelineOption = TIMELINE_OPTIONS.find(t => t.id === formData.timeline);
+      const timelineTitle = timelineOption 
+        ? `${timelineOption.label} (${timelineOption.desc})` 
+        : formData.timeline;
+
       const stageName = `${stageTitle} | Dự kiến: ${timelineTitle}`;
 
       const roomName = ROOM_NAMES[formData.room] || formData.room;

@@ -113,6 +113,15 @@ serve(async (req) => {
         timeline = parts[1];
       }
 
+      // Định dạng phần ghi chú nhỏ cho Tiến độ dự kiến (nếu có phần mô tả trong ngoặc đơn)
+      let formattedTimeline = timeline;
+      if (timeline.includes('(') && timeline.endsWith(')')) {
+        const openParenIdx = timeline.indexOf('(');
+        const label = timeline.substring(0, openParenIdx).trim();
+        const desc = timeline.substring(openParenIdx + 1, timeline.length - 1).trim();
+        formattedTimeline = `${label} <i>(${desc})</i>`;
+      }
+
       // Đảo phần in đậm: chỉ in đậm tiêu đề (bên trái dấu :), nội dung giá trị (bên phải dấu :) để bình thường
       messageText = `
 <b>✨ THÔNG BÁO LỊCH HẸN MỚI (SCONCEPT) ✨</b>
@@ -127,7 +136,7 @@ serve(async (req) => {
 • <b>Mục đích</b>: ${purpose}
 • <b>Ngân sách</b>: ${record.budget_type || 'N/A'}
 • <b>Giai đoạn</b>: ${stage}
-• <b>Tiến độ dự kiến</b>: ${timeline}
+• <b>Tiến độ dự kiến</b>: ${formattedTimeline}
 
 📅 <b>LỊCH HẸN</b>
 • <b>Hình thức</b>: ${record.consult_type || 'N/A'}

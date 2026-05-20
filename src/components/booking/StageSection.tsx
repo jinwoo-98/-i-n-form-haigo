@@ -95,29 +95,29 @@ const StageSection = ({
               type="button"
               onClick={() => onSelectTimeline(t.id)}
               className={cn(
-                "relative flex items-center gap-3 p-3.5 rounded-xl border-2 transition-all duration-300 text-left group",
+                "relative flex items-center gap-3 p-4 rounded-xl border-2 transition-all duration-300 text-left group",
                 selectedTimeline === t.id
                   ? "border-vugia-navy bg-vugia-navy/5 shadow-sm ring-1 ring-vugia-navy/10"
                   : "border-vugia-sand bg-white hover:border-vugia-navy/20 hover:bg-vugia-accent/5 active:scale-[0.98]"
               )}
             >
-              <div className="text-[22px] md:text-[24px] flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
+              <div className="text-[24px] md:text-[26px] flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
                 {t.icon}
               </div>
-              <div className="min-w-0">
+              <div className="min-w-0 flex-1">
                 <div className={cn(
-                  "text-[13px] md:text-[14px] font-bold leading-tight truncate",
+                  "text-[15px] md:text-[16px] font-extrabold leading-tight truncate",
                   selectedTimeline === t.id ? "text-vugia-navy" : "text-slate-800"
                 )}>
                   {t.label}
                 </div>
-                <div className="text-[11px] text-slate-400 font-medium mt-0.5 truncate">
+                <div className="text-[12px] md:text-[13px] text-slate-500 leading-snug mt-1 truncate">
                   {t.desc}
                 </div>
               </div>
 
               {selectedTimeline === t.id && (
-                <div className="absolute top-2 right-2 w-1.5 h-1.5 bg-vugia-navy rounded-full" />
+                <div className="absolute top-3 right-3 w-2 h-2 bg-vugia-navy rounded-full animate-pulse" />
               )}
             </button>
           ))}
