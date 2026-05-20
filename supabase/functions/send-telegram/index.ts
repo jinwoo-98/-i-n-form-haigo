@@ -66,22 +66,43 @@ serve(async (req) => {
     } else if (record) {
       const formattedDate = record.appointment_date ? record.appointment_date.split('-').reverse().join('/') : 'Chưa chọn';
       
-      let attachments = record.attachments || [];
-      if (typeof attachments === 'string') {
-        attachments = attachments.replace(/{|}/g, '').split(',').filter(Boolean);
+      // 1. Xử lý tệp đính kèm một cách an toàn và chính xác
+      let attachments = [];
+      if (record.attachments) {
+        if (Array.isArray(record.attachments)) {
+          attachments = record.attachments;
+        } else if (typeof record.attachments === 'string') {
+          // Xử lý chuỗi định dạng mảng của Postgres: {url1,url2}
+          attachments = record.attachments
+            .replace(/{|}/g, '')
+            .split(',')
+            .map(url => url.trim())
+            .filter(Boolean);
+        }
       }
+
       const fileLinksText = attachments.length > 0
-        ? attachments.map((url, i) => `• <a href="${url.trim()}">Tài liệu ${i + 1}</a>`).join('\n')
+        ? attachments.map((url, i) => `• <a href="${url}">Tài liệu đính kèm ${i + 1}</a>`).join('\n')
         : '<i>Không có tài liệu đính kèm</i>';
 
       const now = new Date().toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh' });
       
+      // 2. Tách thông tin Loại căn hộ & Mục đích sử dụng
       let roomType = record.room_type || 'N/A';
       let purpose = 'N/A';
       if (roomType.includes(' | Mục đích: ')) {
         const parts = roomType.split(' | Mục đích: ');
         roomType = parts[0];
         purpose = parts[1];
+      }
+
+      // 3. Tách thông tin Giai đoạn & Tiến độ dự kiến (Câu hỏi bổ sung mới)
+      let stage = record.stage || 'N/A';
+      let timeline = 'N/A';
+      if (stage.includes(' | Dự kiến: ')) {
+        const parts = stage.split(' | Dự kiến: ');
+        stage = parts[0];
+        timeline = parts[1];
       }
 
       messageText = `
@@ -96,6 +117,8 @@ serve(async (req) => {
 • Loại căn: ${roomType}
 • Mục đích: ${purpose}
 • Ngân sách: ${record.budget_type || 'N/A'}
+• Giai đoạn: ${stage}
+• Tiến độ dự kiến: <b>${timeline}</b>
 
 📅 <b>LỊCH HẸN</b>
 • Hình thức: <b>${record.consult_type || 'N/A'}</b>
