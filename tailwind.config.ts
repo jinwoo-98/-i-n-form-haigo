@@ -25,11 +25,11 @@ export default {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         vugia: {
-          navy: "#2D4333",   // Xanh Rêu đậm (Khớp với logo SOPHIA CONCEPT)
-          gold: "#8C8070",   // Vàng đồng/Nâu đất
-          sand: "#EDE8DF",   // Màu cát/Beige
-          cream: "#F9F6F0",  // Màu nền kem
-          accent: "#E8F0EA", // Màu xanh nhạt nhấn
+          navy: "#1A1A1A",   // Dark Charcoal/Black (Matching HAI GO typography)
+          gold: "#F58220",   // Premium Accent Orange (Matching HAI GO's logo house icon)
+          sand: "#EADCC9",   // Light sandy wood color (Matching warm tone of timber)
+          cream: "#FCFAF6",  // Soft cream background
+          accent: "#FFF3E5", // Light warm orange hover/highlight tint
         },
         primary: {
           DEFAULT: "hsl(var(--primary))",

@@ -12,28 +12,28 @@ const BookingHeader = () => {
       <div className="flex items-center justify-between gap-3 px-1">
         {/* Logo & Brand Name */}
         <div className="flex items-center gap-3 md:gap-4 min-w-0">
-          {/* Logo Container - Trích xuất icon từ phần trên của ảnh dọc */}
-          <div className="w-12 h-12 md:w-15 md:h-15 rounded-xl bg-white flex items-center justify-center shadow-sm border border-vugia-sand/60 flex-shrink-0 overflow-hidden p-0.5">
+          {/* Logo Container - HAI GO */}
+          <div className="w-12 h-12 md:w-15 md:h-15 rounded-xl bg-white flex items-center justify-center shadow-sm border border-vugia-sand/60 flex-shrink-0 overflow-hidden p-1">
             <img
-              src="/Logo Sophia Concept 2-1.png"
-              alt="SOPHIA CONCEPT"
-              className="w-full h-full object-cover object-top scale-110"
+              src="/Logo 2 - 1.png"
+              alt="HAI GO"
+              className="w-full h-full object-contain"
               onError={(e) => {
-                e.currentTarget.src = 'https://placehold.co/100x100?text=SC';
+                e.currentTarget.src = 'https://placehold.co/100x100?text=HG';
               }}
             />
           </div>
           <div className="min-w-0">
             <div className="text-[17px] md:text-[22px] font-bold text-vugia-navy leading-none tracking-tight uppercase">
-              SOPHIA CONCEPT
+              HAI GO
             </div>
             <div className="text-[10px] md:text-[11px] text-vugia-gold font-bold italic mt-1 tracking-wide">
-              We Craft, You Shape
+              FURNITURE WOOD
             </div>
           </div>
         </div>
 
-        {/* Hotline Button - Đã sửa lỗi ẩn số điện thoại */}
+        {/* Hotline Button */}
         <a
           href={telLink}
           className="flex items-center gap-2 bg-white border border-vugia-sand hover:border-vugia-navy/30 hover:shadow-md rounded-full pl-1.5 pr-3.5 py-1.5 transition-all active:scale-95 flex-shrink-0"
