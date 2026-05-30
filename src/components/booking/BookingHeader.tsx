@@ -4,8 +4,8 @@ import React from 'react';
 import { Phone } from 'lucide-react';
 
 const BookingHeader = () => {
-  const phoneNumber = "0908.386.258";
-  const telLink = "tel:0908386258";
+  const phoneNumber = "0826.818.805";
+  const telLink = "tel:0826818805";
 
   return (
     <header className="w-full max-w-2xl mx-auto mb-5">
