@@ -17,8 +17,8 @@ const SuccessView = ({ data, onReset }: SuccessViewProps) => {
   const getTimelineName = (id: string) => TIMELINE_OPTIONS.find(t => t.id === id)?.label || id;
 
   const formattedDate = data.date ? data.date.split('-').reverse().join('/') : 'Sẽ liên hệ xác nhận';
-  const hotlineDisplay = "0908.386.258";
-  const hotlineLink = "tel:0908386258";
+  const hotlineDisplay = "0826.818.805";
+  const hotlineLink = "tel:0826818805";
 
   return (
     <div className="max-w-2xl mx-auto bg-white rounded-[24px] md:rounded-[32px] shadow-xl md:shadow-2xl overflow-hidden border border-vugia-sand p-6 sm:p-10 md:p-14 text-center">
