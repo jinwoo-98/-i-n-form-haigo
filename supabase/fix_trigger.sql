@@ -1,21 +1,35 @@
--- 1. Xóa trigger cũ chứa secret bị lộ
-DROP TRIGGER IF EXISTS notify_telegram_on_booking ON public.bookings;
+-- 1. DROP TRIGGER NẾU ĐÃ TỒN TẠI
+DROP TRIGGER IF EXISTS on_booking_created ON bookings;
+DROP FUNCTION IF EXISTS notify_telegram_on_booking();
 
--- 2. Tạo lại trigger với cơ chế xác thực an toàn
--- Lưu ý: Bạn cần thay thế 'YOUR_SERVICE_ROLE_KEY' bằng Service Role Key thực tế của dự án 
--- (Lấy trong Project Settings -> API -> service_role secret)
--- Hoặc tốt nhất là sử dụng Supabase Vault để lưu trữ key này.
+-- 2. TẠO FUNCTION ĐỂ GỌI EDGE FUNCTION
+CREATE OR REPLACE FUNCTION notify_telegram_on_booking()
+RETURNS TRIGGER AS $$
+DECLARE
+  payload_json TEXT;
+BEGIN
+  -- Tạo payload JSON chứa record vừa tạo
+  payload_json := json_build_object('record', row_to_json(NEW))::text;
 
-CREATE TRIGGER notify_telegram_on_booking
-AFTER INSERT ON public.bookings
+  -- Gọi Edge Function 'send-telegram' của dự án Supabase mới uuknpozfarylduduxogh
+  PERFORM supabase_functions.http_request(
+    'https://uuknpozfarylduduxogh.supabase.co/functions/v1/send-telegram',
+    'POST',
+    '{"Content-Type":"application/json", "Authorization":"Bearer YOUR_SERVICE_ROLE_KEY"}'::text,
+    payload_json,
+    1000 -- Timeout 1 giây
+  );
+
+  RETURN NEW;
+EXCEPTION WHEN OTHERS THEN
+  -- Bỏ qua lỗi gọi HTTP để không làm gián đoạn tiến trình lưu DB của khách hàng
+  RAISE WARNING 'Lỗi khi gọi HTTP request gửi Telegram: %', SQLERRM;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- 3. TẠO TRIGGER SAU KHI INSERT TRÊN BẢNG BOOKINGS
+CREATE TRIGGER on_booking_created
+AFTER INSERT ON bookings
 FOR EACH ROW
-EXECUTE FUNCTION supabase_functions.http_request(
-  'https://zcfgfrlbomtghxsakzvi.supabase.co/functions/v1/send-telegram',
-  'POST',
-  '{"Content-Type":"application/json", "Authorization":"Bearer YOUR_SERVICE_ROLE_KEY"}',
-  '{}',
-  '5000'
-);
-
--- Ghi chú bảo mật: Sau khi chạy lệnh này, secret sẽ không còn nằm trong code frontend 
--- và Edge Function sẽ chỉ chấp nhận cuộc gọi từ chính Database của bạn.
+EXECUTE FUNCTION notify_telegram_on_booking();
