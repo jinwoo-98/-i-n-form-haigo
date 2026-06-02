@@ -117,7 +117,7 @@ serve(async (req) => {
       }
 
       messageText = `
-<b>✨ THÔNG BÁO LỊCH HẸN MỚI (HAI GO) ✨</b>
+<b>✨ THÔNG BÁO LỊCH HẸN MỚI (HAIGO) ✨</b>
 ━━━━━━━━━━━━━━━━━━
 👤 <b>KHÁCH HÀNG</b>
 • <b>Họ tên</b>: ${record.customer_name}

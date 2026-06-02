@@ -160,7 +160,7 @@ const RoomDetailsSection = ({ formData, setFormData, budgetOptions, errors = {} 
                 onChange={e => setFormData({ ...formData, otherCity: e.target.value })}
               />
               <p className="text-[13px] text-slate-500 mt-1.5 ml-1 italic">
-                HAI GO hỗ trợ tư vấn và thi công trên toàn quốc
+                HAIGO hỗ trợ tư vấn và thi công trên toàn quốc
               </p>
             </div>
           )}

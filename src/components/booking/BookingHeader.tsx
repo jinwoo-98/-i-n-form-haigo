@@ -12,11 +12,11 @@ const BookingHeader = () => {
       <div className="flex items-center justify-between gap-3 px-1">
         {/* Logo & Brand Name */}
         <div className="flex items-center gap-3 md:gap-4 min-w-0">
-          {/* Logo Container - HAI GO */}
+          {/* Logo Container - HAIGO */}
           <div className="w-12 h-12 md:w-15 md:h-15 rounded-xl bg-white flex items-center justify-center shadow-sm border border-vugia-sand/60 flex-shrink-0 overflow-hidden p-1">
             <img
               src="/Logo 2 - 1.png"
-              alt="HAI GO"
+              alt="HAIGO"
               className="w-full h-full object-contain"
               onError={(e) => {
                 e.currentTarget.src = 'https://placehold.co/100x100?text=HG';
@@ -25,7 +25,7 @@ const BookingHeader = () => {
           </div>
           <div className="min-w-0">
             <div className="text-[17px] md:text-[22px] font-bold text-vugia-navy leading-none tracking-tight uppercase">
-              HAI GO
+              HAIGO
             </div>
             <div className="text-[10px] md:text-[11px] text-vugia-gold font-bold italic mt-1 tracking-wide">
               FURNITURE WOOD
