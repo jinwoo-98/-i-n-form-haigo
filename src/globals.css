@@ -112,3 +112,23 @@
     padding-bottom: calc(0.75rem + env(safe-area-inset-bottom, 0px));
   }
 }
+
+/* ==========================================================================
+   TỐI ƯU HÓA KHÔNG GIAN KHI MỞ BÀN PHÍM ĐIỆN THOẠI (MOBILE KEYBOARD FIX)
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  body:has(input:focus, textarea:focus, select:focus) .booking-header-wrapper {
+    max-height: 0px !important;
+    margin-bottom: 0px !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    overflow: hidden !important;
+  }
+
+  body:has(input:focus, textarea:focus, select:focus) .scroll-hint-container {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+  }
+}
