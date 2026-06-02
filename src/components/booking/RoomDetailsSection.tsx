@@ -72,7 +72,7 @@ const RoomDetailsSection = ({ formData, setFormData, budgetOptions, errors = {} 
                 formData.purpose === p.id ? "text-vugia-navy" : "text-vugia-navy"
               )}>{p.title}</div>
               <div className={cn(
-                "text-[12px] md:text-[13px] mt-1 leading-snug transition-colors",
+                "text-[13px] md:text-[14px] mt-1 leading-snug transition-colors",
                 formData.purpose === p.id ? "text-vugia-navy/70" : "text-slate-600"
               )}>{p.desc}</div>
               
@@ -159,7 +159,7 @@ const RoomDetailsSection = ({ formData, setFormData, budgetOptions, errors = {} 
                 value={formData.otherCity}
                 onChange={e => setFormData({ ...formData, otherCity: e.target.value })}
               />
-              <p className="text-[12px] text-slate-500 mt-1.5 ml-1 italic">
+              <p className="text-[13px] text-slate-500 mt-1.5 ml-1 italic">
                 HAI GO hỗ trợ tư vấn và thi công trên toàn quốc
               </p>
             </div>

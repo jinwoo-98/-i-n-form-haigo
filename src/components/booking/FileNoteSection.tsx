@@ -60,7 +60,7 @@ const FileNoteSection = ({ files, setFiles, note, setNote }: FileNoteSectionProp
           <div className="text-[14px] md:text-[15px] font-bold text-vugia-navy">
             Tải lên bản vẽ, ảnh hoặc video hiện trạng
           </div>
-          <p className="text-[12px] md:text-[13px] text-slate-500 mt-1.5">
+          <p className="text-[13px] md:text-[14px] text-slate-500 mt-1.5">
             Ảnh, Video, PDF (Tối đa 50MB/file)
           </p>
           <input

@@ -58,15 +58,15 @@ const StageSection = ({
                 </div>
               </div>
 
-              <p className="text-[13px] md:text-[14px] text-slate-500 leading-snug mb-3 line-clamp-2">
+              <p className="text-[14px] md:text-[15px] text-slate-500 leading-snug mb-3 line-clamp-2">
                 {s.desc}
               </p>
 
               <div className={cn(
-                "mt-auto pt-2.5 border-t border-dashed w-full text-[12px] md:text-[13px] font-bold flex items-center gap-1.5",
+                "mt-auto pt-2.5 border-t border-dashed w-full text-[13px] md:text-[14px] font-bold flex items-center gap-2",
                 selectedStage === s.id ? "text-vugia-gold border-vugia-navy/20" : "text-vugia-gold/80 border-vugia-sand"
               )}>
-                <span className="text-[14px] leading-none">→</span>
+                <span className="text-[16px] font-extrabold leading-none select-none">→</span>
                 <span className="truncate">{s.inc}</span>
               </div>
 
@@ -88,7 +88,6 @@ const StageSection = ({
           Anh/Chị dự kiến sử dụng nội thất khi nào? <span className="text-red-500">*</span>
         </h3>
 
-        {/* THAY ĐỔI: Sử dụng cấu trúc grid-cols-1 sm:grid-cols-2 giống hệt câu 1 phía trên để hiển thị 1 cột trên Mobile */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {TIMELINE_OPTIONS.map((t) => (
             <button
@@ -112,8 +111,7 @@ const StageSection = ({
                 )}>
                   {t.label}
                 </div>
-                {/* TĂNG SIZE: text-[12px] -> text-[13px] và BỎ TRUNCATE để hiển thị đầy đủ thông tin mô tả */}
-                <div className="text-[13px] md:text-[14px] text-slate-500 leading-snug mt-1.5">
+                <div className="text-[14px] md:text-[15px] text-slate-500 leading-snug mt-1.5">
                   {t.desc}
                 </div>
               </div>

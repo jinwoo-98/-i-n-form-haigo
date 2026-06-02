@@ -43,7 +43,7 @@ const AppointmentSection = ({ formData, setFormData, dates, slots, errors = {} }
                 formData.consultType === t.id ? "text-vugia-navy" : "text-vugia-navy"
               )}>{t.title}</div>
               <div className={cn(
-                "text-[11px] md:text-[12px] opacity-85 mt-1 leading-tight transition-colors hidden sm:block",
+                "text-[12px] md:text-[13px] opacity-85 mt-1 leading-tight transition-colors hidden sm:block",
                 formData.consultType === t.id ? "text-vugia-navy/70" : "text-slate-600"
               )}>{t.desc}</div>
               
