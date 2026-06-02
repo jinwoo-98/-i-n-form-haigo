@@ -58,12 +58,12 @@ const StageSection = ({
                 </div>
               </div>
 
-              <p className="text-[12px] md:text-[13px] text-slate-500 leading-snug mb-3 line-clamp-2">
+              <p className="text-[13px] md:text-[14px] text-slate-500 leading-snug mb-3 line-clamp-2">
                 {s.desc}
               </p>
 
               <div className={cn(
-                "mt-auto pt-2.5 border-t border-dashed w-full text-[11px] md:text-[12px] font-bold flex items-center gap-1.5",
+                "mt-auto pt-2.5 border-t border-dashed w-full text-[12px] md:text-[13px] font-bold flex items-center gap-1.5",
                 selectedStage === s.id ? "text-vugia-gold border-vugia-navy/20" : "text-vugia-gold/80 border-vugia-sand"
               )}>
                 <span className="text-[14px] leading-none">→</span>
@@ -77,7 +77,7 @@ const StageSection = ({
           ))}
         </div>
         {errors?.stage && (
-          <p className="text-red-500 text-[12px] mt-1.5 font-medium">{errors.stage}</p>
+          <p className="text-red-500 text-[13px] mt-1.5 font-medium">{errors.stage}</p>
         )}
       </div>
 
@@ -88,14 +88,15 @@ const StageSection = ({
           Anh/Chị dự kiến sử dụng nội thất khi nào? <span className="text-red-500">*</span>
         </h3>
 
-        <div className="grid grid-cols-2 gap-3">
+        {/* THAY ĐỔI: Sử dụng cấu trúc grid-cols-1 sm:grid-cols-2 giống hệt câu 1 phía trên để hiển thị 1 cột trên Mobile */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {TIMELINE_OPTIONS.map((t) => (
             <button
               key={t.id}
               type="button"
               onClick={() => onSelectTimeline(t.id)}
               className={cn(
-                "relative flex items-center gap-3 p-4 rounded-xl border-2 transition-all duration-300 text-left group",
+                "relative flex items-center gap-4 p-4 rounded-xl border-2 transition-all duration-300 text-left group",
                 selectedTimeline === t.id
                   ? "border-vugia-navy bg-vugia-navy/5 shadow-sm ring-1 ring-vugia-navy/10"
                   : "border-vugia-sand bg-white hover:border-vugia-navy/20 hover:bg-vugia-accent/5 active:scale-[0.98]"
@@ -106,12 +107,13 @@ const StageSection = ({
               </div>
               <div className="min-w-0 flex-1">
                 <div className={cn(
-                  "text-[15px] md:text-[16px] font-extrabold leading-tight truncate",
+                  "text-[15px] md:text-[16px] font-extrabold leading-tight",
                   selectedTimeline === t.id ? "text-vugia-navy" : "text-slate-800"
                 )}>
                   {t.label}
                 </div>
-                <div className="text-[12px] md:text-[13px] text-slate-500 leading-snug mt-1 truncate">
+                {/* TĂNG SIZE: text-[12px] -> text-[13px] và BỎ TRUNCATE để hiển thị đầy đủ thông tin mô tả */}
+                <div className="text-[13px] md:text-[14px] text-slate-500 leading-snug mt-1.5">
                   {t.desc}
                 </div>
               </div>
@@ -123,7 +125,7 @@ const StageSection = ({
           ))}
         </div>
         {errors?.timeline && (
-          <p className="text-red-500 text-[12px] mt-1.5 font-medium">{errors.timeline}</p>
+          <p className="text-red-500 text-[13px] mt-1.5 font-medium">{errors.timeline}</p>
         )}
       </div>
     </div>
