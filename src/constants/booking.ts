@@ -25,9 +25,9 @@ export const STAGES = [
 ];
 
 export const TIMELINE_OPTIONS = [
-  { id: 'urgent', icon: '🔥', label: 'Sắp dọn vào', desc: 'Cần trong 2 tuần' },
-  { id: 'preparing', icon: '📦', label: 'Đang chuẩn bị', desc: '1-2 tháng nữa' },
-  { id: 'not-urgent', icon: '🌱', label: 'Chưa vội', desc: 'Trên 2 tháng' },
+  { id: 'urgent', icon: '🔥', label: 'Sắp dọn vào', desc: 'Cần trong 1-2 tuần' },
+  { id: 'preparing', icon: '📦', label: 'Đang chuẩn bị', desc: 'Cần trong 1 tháng' },
+  { id: 'not-urgent', icon: '🌱', label: 'Chưa vội', desc: 'Cần trong 2 tháng' },
   { id: 'exploring', icon: '💭', label: 'Tìm hiểu trước', desc: 'Chưa có timeline' }
 ];
 
@@ -39,7 +39,7 @@ export const PURPOSES = [
 export const CONSULT_TYPES = [
   { id: 'video', icon: '📹', title: 'Video call', desc: 'Zoom / Google Meet linh hoạt' },
   { id: 'showroom', icon: '🏬', title: 'Tại showroom', desc: 'Xem đồ thật, trải nghiệm chất liệu' },
-  { id: 'flexible', icon: '💬', title: 'Linh hoạt', desc: 'Để VŨ GIA sắp xếp giúp' }
+  { id: 'flexible', icon: '💬', title: 'Linh hoạt', desc: 'Để HAIGO sắp xếp giúp' }
 ];
 
 export const SLOT_DURATION: Record<string, number> = {
